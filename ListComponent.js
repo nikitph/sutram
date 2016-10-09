@@ -4,9 +4,8 @@
 import React, {Component} from "react";
 import {AppRegistry, Text, View, RecyclerViewBackedScrollView} from "react-native";
 import {ListView} from "realm/react-native";
-import Icon from "react-native-vector-icons/MaterialIcons";
+
 var styl = require('./styles');
-var Realm = require('realm');
 
 
 export default class ListComponent extends Component {
@@ -18,21 +17,15 @@ export default class ListComponent extends Component {
             rowHasChanged: (row1, row2) => row1 !== row2,
 
         });
-
-        this.realm = new Realm({schema: [props.schem]});
-        this.realm.addListener('change', () => {
-            this.state.dataSource = dataSource.cloneWithRows(this.realm.objects('medSched'));
-        });
-
-
         this.state = {
-            dataSource: dataSource.cloneWithRows(props.ds.objects('medSched')),
+            dataSource: dataSource.cloneWithRows(props.ds)
         };
     }
 
     render() {
         return (
-            <View style={{paddingTop: 22}}>
+            <View style={{marginTop: 65,flex:1,justifyContent:'center',backgroundColor: '#E4E1D6'
+            }}>
                 <ListView
                     initialListSize={100}
                     pageSize={50}
@@ -42,22 +35,9 @@ export default class ListComponent extends Component {
                     renderRow={(rowData) => {
                         return (
                             <View style={styl.rowcontainer}>
-                                <View style={styl.colcontainer}>
-                                    <Icon name="check-circle" size={20} color="green"/>
-                                    <Text style={styl.vcol}>{rowData.medicine}</Text>
-                                    <Text style={{fontSize: 14, font: 'avenirNext', color: 'orange'}}>Frequency</Text>
+                                    <Text style={styl.vcol}>{rowData}</Text>
 
                                 </View>
-                                <View style={styl.colcontainer}>
-                                    <Icon name="announcement" size={20} color="#900"/>
-                                    <Text style={styl.vcol}>{rowData.quantity}</Text>
-                                    <Text style={{
-                                        fontSize: 24,
-                                        font: 'avenir',
-                                        color: 'orange'
-                                    }}>{rowData.frequency}</Text>
-                                </View>
-                            </View>
 
                         );
                     }}
